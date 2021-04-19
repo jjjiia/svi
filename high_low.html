@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Mapping the New Politics of Care</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
+    <script src="https://unpkg.com/scrollama"></script>
+    <style>
+        body {
+            margin:0; 
+            padding:0; 
+            font-family: 'Rubik', sans-serif;         
+            font-size:14px;
+            padding:30px;
+            color:#aaa;
+            font-weight:600;
+        }
+        .square{
+          width:1200px;
+          height:1200px;
+          display:inline-block;
+          padding:20px;
+          vertical-align:top;
+          
+/*          border:1px solid black;
+*//*          margin:10px;
+*/        }
+        #menu{
+          width:20vw;;
+          vertical-align:top;
+          border:1px solid black;
+          display:inline-block;
+          padding:5px;
+        }
+        #grid{
+/*          width:70vw;;
+          border:1px solid black;
+*/          display:inline-block;
+          padding:10px;
+          width:50vw;
+        }
+        img{
+          width:1000px;
+          height:1000px;
+          object-fit: contain;
+/*          padding:30px;
+*//*          border:1px solid black;
+*/          
+        }
+        .highlight{
+          color:black;
+          font-size:32px;
+        }
+        .cat{
+          color:black;
+          font-size:14px;
+        }
+        .labels{
+/*          margin:30px;
+*/        }
+          #control{
+            font-size:12px;
+            color:black;
+            display:inline-block;
+            width:800px;
+            vertical-align:top;
+          }
+          .menu{
+/*            width:100%;
+*/            padding:5px;
+            margin:10px;
+            display:inline-block;
+          }
+          
+          .dropbtn {
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+          }
+
+          .dropdown {
+            position: relative;
+            display: inline-block;
+          }
+
+          .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+          }
+
+          .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+          }
+
+          .dropdown-content a:hover {background-color: #f1f1f1}
+
+          .dropdown:hover .dropdown-content {
+            display: block;
+          }
+
+          .dropdown:hover .dropbtn {
+            background-color: #3e8e41;
+          }
+          .button{
+            padding:10px;
+            border:1px solid black;
+          }
+          #dropdownMenu{
+            padding:10px;
+          }
+          #map{
+            width:800px;
+            height:800px;
+            display:inline-block;
+            vertical-align:top;
+            border:1px solid black;
+          }
+          #mapName{
+            font-size:26px;
+            padding:20px;
+            width:300px;
+            position:absolute;
+            color:#000;
+          }
+        </style>
+</head>
+<body>
+
+
+<script>
+
+</script>
+  
+<!-- <div id="menu">test</div>  -->
+
+<div id="control">
+  <div class="menu dropdown">
+   <select id="dropdownMenu">
+     cat
+   </select>
+  </div>
+  
+  
+   <div class="menu">
+     <span id="down" class="button">HIGH to LOW</span>
+     <span id="up" class="button"> LOW to HIGH</span>
+    </div>
+   <div class="menu" id="size">
+     image size <span id="demo"></span>
+      <input type="range" min="100" max="1000" value="210" class="slider" id="myRange">
+   </div>
+<div id="map"><div id="mapName"></div></div>
+</div>
+
+<div id="grid"></div>
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&family=Rubik:wght@300;600&display=swap" rel="stylesheet">
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/d3.js"></script>
+<script type="text/javascript" src="js/crossfilter.js"></script>
+<script type="text/javascript" src="js/dc.js"></script>
+<script type="text/javascript" src="js/queue.v1.min.js"></script>
+<script type="text/javascript" src="high_low.js"></script>
+</body>
+</html>

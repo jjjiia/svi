@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>You are here</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
+    <script src="https://unpkg.com/scrollama"></script>
+    <style>
+        body {
+            margin:0; 
+            padding:0; 
+            font-family: 'Rubik', sans-serif;         
+            font-size:14px;
+            color:#fff;
+            font-weight:100;
+        }
+        .frame{
+          width:100vw;
+          height:100vh;
+          border:1px solid black;
+        }
+        #map{
+          width:100vw;
+        }
+        p{
+          padding:10px;
+        }
+        #start{
+          position:absolute;z-index:999;
+          right:0px;
+        }
+        #overview{
+/*          padding:20px;
+*/          width:980px;
+          color:#fff;
+          font-weight:600;
+        }
+        
+        </style>
+</head>
+<body>
+
+
+<script>
+
+</script>
+  <div id="start">
+    <!-- <p>
+      How can we understand public data like the Social Vulnerability Index?
+    </p> -->
+    <div id="overview"></div>
+  </div>
+  
+    <div id="jh">
+    <div class="frame" id="map"></div>
+    <p>
+    1 way is to place ourselves in the data. Here I am, in my neighborhood.
+    My home census tract - Tract 287 in Jackson Heights, Queens County, New York, has 6,226 residents, living in 2,676 households, over 0.07553120375 square miles.
+    How socially vulnerable is tract 287?
+  </p>
+    </p>
+  </div>
+    <p>
+    my tract: #, jackson heights<br>
+    % of population for each category<br>
+    </p>
+    <p>
+      Neighbors
+    </p>
+    <p>
+    relative values - ranking in the city
+    </p>
+    <p>
+      similar places
+      </p>
+      <p>
+  </div>
+<!-- <div id="menu">test</div>  -->
+
+<!-- <div id="control">
+  <div class="menu dropdown">
+   <select id="dropdownMenu">
+     cat
+   </select>
+  </div>
+
+
+   <div class="menu">
+     <span id="down" class="button">HIGH to LOW</span>
+     <span id="up" class="button"> LOW to HIGH</span>
+    </div>
+   <div class="menu" id="size">
+     image size <span id="demo"></span>
+      <input type="range" min="100" max="1000" value="210" class="slider" id="myRange">
+   </div>
+<div id="map"><div id="mapName"></div></div>
+</div>
+
+<div id="grid"></div> -->
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&family=Rubik:wght@300;600&display=swap" rel="stylesheet">
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/d3.js"></script>
+<script type="text/javascript" src="js/crossfilter.js"></script>
+<script type="text/javascript" src="js/dc.js"></script>
+<script type="text/javascript" src="js/queue.v1.min.js"></script>
+<script type="text/javascript" src="jh.js"></script>
+</body>
+</html>
