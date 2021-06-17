@@ -16,7 +16,8 @@ SNGPNT:"% of Single parent household with children under 18",
 UNEMP:"Unemployement Rate",
 TOTPOP:"Total Population",
     UNINSUR:"% Uninsured",
-    THEMES:"total rank"
+    THEMES:"total rank",
+	TOTPOP:"total population"
 }
 var colors = ["#79872a",
 "#37a625",
@@ -40,7 +41,7 @@ var colors2 = ["#ea5a22",
 "#bf4931"]
 //top, bottom, middle, same/different, place at both ends - more than 1 extreme
 var sortOrder = "UP"
-var currentCat = "RPL_THEMES"
+var currentCat = "E_TOTPOP"
 var countyNames = {
     "Richmond County":"Staten Island",
     "Kings County":"Brooklyn",
@@ -48,8 +49,8 @@ var countyNames = {
     "Queens County":"Queens",
     "Bronx County":"The Bronx"
 }
-var listLen = 10
-     var topTenCats = ["RPL_THEMES",'EP_UNEMP', 'EP_PCI', 'EP_NOHSDP', 'EP_AGE65', 'EP_AGE17', 'EP_DISABL',
+var listLen = 20
+var topTenCats = ["E_TOTPOP","RPL_THEMES",'EP_UNEMP', 'EP_PCI', 'EP_NOHSDP', 'EP_AGE65', 'EP_AGE17', 'EP_DISABL',
      'EP_SNGPNT', 'EP_MINRTY', 'EP_LIMENG', 'EP_MUNIT', 'EP_MOBILE', 'EP_CROWD', 'EP_NOVEH', 'EP_GROUPQ', 'EP_UNINSUR','EP_POV']
 var withPop =null
 
@@ -88,7 +89,7 @@ function slider(){
     slider.oninput = function() {
       output.innerHTML = this.value;
       gridSize(this.value)
-    
+      
       
     }
     
@@ -175,6 +176,9 @@ function ready(sviData,neighborhoods,centroids,geo){
        // console.log(topTenCats[t])
         display(withPop,topTenCats[t])
     }
+	
+	console.log(sviData)
+	console.log(geo)
 
     // display(withPop,'EP_UNEMP')
 }
@@ -229,15 +233,15 @@ function drawMap(geo, centroids, list){
         .attr("fill",function(d,i){
             if(currentCat=="EP_PCI"){
                 if(sortOrder=="UP"){
-                    return colors2[i]
+                    return colors2[i%(colors2.length-1)]
                 }else{
-                    return colors[i]
+                    return colors[i%(colors.length-1)]
                 }
             }
             if(sortOrder=="UP"){
-                return colors[i]
+                    return colors[i%(colors.length-1)]
             }else{
-                return colors2[i]
+                    return colors2[i%(colors2.length-1)]
             }
         })
     
@@ -306,15 +310,15 @@ function filterNoPop(data,nDict){
     var withPop = []
     
     for(var i in data){
-        if(data[i]["COUNTY"]=="Bronx"){
-            if(data[i]["E_HH"]>100){
+       // if(data[i]["COUNTY"]=="Bronx"){
+            if(data[i]["E_HH"]>0){
                 var fips = data[i]["FIPS"]
                 var neighborhood = nDict[fips]
                 var newEntry = data[i]
                 newEntry["neighborhood"]=neighborhood
                 withPop.push(newEntry)
             }
-        }
+			//}
 
     }
     //console.log("filtered length = "+withPop.length)
