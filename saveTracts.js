@@ -5,13 +5,13 @@
 //        .defer(d3.csv,"allCentroids.csv")
 //	.await(dataDidLoad);
 //})
-var centroidsFile = d3.csv("allCentroids.csv")
+//var centroidsFile = d3.csv("allCentroids.csv")
 var finishedGidsFile = d3.json("finished_gids 10.16.34 AM.json")
 var boundaries = d3.json("CT_2018Polygon.geojson")
-Promise.all([centroidsFile,finishedGidsFile,boundaries]	)
+Promise.all([finishedGidsFile,boundaries]	)
 .then(function(data){
 	//console.log(data[0])
-	dataDidLoad(data[0],data[1],data[2])
+	dataDidLoad(data[0],data[1])
 })
 
 // var centroids = [
@@ -44,7 +44,147 @@ var boundariesData = null
 //var map = null
 //var gid = null
 
-var idsTodo=[36085011202]
+var quality = ["36047065600",
+"36047064000",
+"36047091000",
+"36047090600",
+"36047091200",
+"36047090800",
+"36047053700",
+"36047123700",
+"36047051500",
+"36047035200",
+"36047053300",
+"36085014605",
+"36047056400",
+"36005002400",
+"36005007900",
+"36005005100",
+"36047093600",
+"36047083400",
+"36047116000",
+"36081018401",
+"36047075400",
+"36047075200",
+"36047075800",
+"36061006000",
+"36061022302",
+"36047101200",
+"36047050400",
+"36085022600",
+"36085004700",
+"36081148300",
+"36061020101",
+"36047090200",
+"36085002700",
+"36085029103",
+"36005000200",
+"36085013800",
+"36047065200",
+"36047066000",
+"36085017700",
+"36047072600"]
+var crop = ["36081066300",
+"36005004400",
+"36005036501",
+"36005022000",
+"36005036902",
+"36005026300",
+"36047046400",
+"36047002300",
+"36005005300",
+"36005038700",
+"36081022900",
+"36005028400",
+"36005024501",
+"36061010601",
+"36061008603",
+"36061006900",
+"36061016700",
+"36061015500",
+"36047012200",
+"36081040900",
+"36081041300",
+"36047002000",
+"36047055500",
+"36081001900",
+"36047054900",
+"36047042500",
+"36047002100",
+"36081091800",
+"36047034000",
+"36047005201",
+"36047046800",
+"36047047000",
+"36047047200",
+"36081019900",
+"36081000100",
+"36081008100",
+"36081026500",
+"36081077500",
+"36081016900",
+"36047005202",
+"36047055700",
+"36047004400",
+"36081097202",
+"36005021301",
+"36005021100",
+"36081059200",
+"36047083200",
+"36081027400",
+"36081050600",
+"36005002300",
+"36047061002",
+"36047036001",
+"36081059400",
+"36081091601",
+"36081086900",
+"36081084900",
+"36081040500",
+"36061026700",
+"36081071303",
+"36081056500",
+"36085024800",
+"36081092500",
+"36081037600",
+"36047067000",
+"36081065600",
+"36085006400",
+"36081066400",
+"36081048100",
+"36085009700",
+"36085020801",
+"36005031800",
+"36081047600",
+"36081037900",
+"36081037700",
+"36081140901",
+"36085017009",
+"36085013203",
+"36085020804",
+"36081109700",
+"36085020803",
+"36061009400",
+"36061025100",
+"36081156700",
+"36081045200",
+"36081005800",
+"36081066000",
+"36081157101",
+"36047006500",
+"36047037900",
+"36081116700",
+"36081086500",
+"36081040700",
+"36081041100",
+"36081037500",
+"36081150701",
+"36005002701",
+"36081092200",
+"36081060000",
+]
+
+var idsTodo= crop
 // ,"36085009700","36085011201","36085011202",
 // "36085012804","36085012805","36085012806","36085015400","36085015601","36085015602",
 // "36085015603","36085017600","36085019800","36085020700","36085020801","36085022300",
@@ -53,17 +193,17 @@ var idsTodo=[36085011202]
 
 //no boudnaries "36085990100","36085008900"
 
-function dataDidLoad(centroidsFile,finished,tractBoundaries){
+function dataDidLoad(finished,tractBoundaries){
     //console.log(finished)
     finishedGids = finished.gids
-    centroidsData = makeDictionary(centroidsFile)
+   // centroidsData = makeDictionary(centroidsFile)
 //    console.log(centroidsData)
 
-    console.log("finished: "+finished.gids.length)
+    // console.log("finished: "+finished.gids.length)
 
 
     boundariesData = makeBoundaryDictionary(tractBoundaries)
-    //console.log(boundariesData)
+    // console.log(boundariesData["36085011202"])
 
     //placesData = getIdsFromDuration(places).sort()
     //gids = getAllGid(centroidsFile)
@@ -76,14 +216,14 @@ function dataDidLoad(centroidsFile,finished,tractBoundaries){
         if(finished.gids.indexOf(gids[g])==-1){
             notFinished.push(gids[g])
 
-            console.log([gids[g],boundariesData[gids[g]]])
+            // console.log([gids[g],boundariesData[gids[g]]])
         }
-    }
-    console.log(notFinished.join(","))
-    console.log("not finished "+notFinished.length)
+    }    //
+    // console.log(notFinished.join(","))
+    // console.log("not finished "+notFinished.length)
 
-    totalIds = gids.length
-    console.log("total: "+totalIds)
+    totalIds = gids.length    //
+    // console.log("total: "+totalIds)
 
 
 
@@ -114,7 +254,7 @@ function dataDidLoad(centroidsFile,finished,tractBoundaries){
 			gid = currentId
         // console.log(map.getStyle().layers)
         map.on("mousemove","tracts",function(c){
-            // console.log(c.features)
+             console.log(c.features[0].properties.FIPS)
         })
 
 	})
@@ -139,7 +279,7 @@ var saveData = (function(data,fileName){
 function makeBoundaryDictionary(data){
     var formatted = {}
     for(var i in data.features){
-        var geoid = data.features[i].properties["GEOID"]
+        var geoid = String(data.features[i].properties["GEOID"])
         formatted[geoid]=data.features[i].geometry
     }
 		console.log(formatted);
@@ -212,14 +352,14 @@ function getMaxMin(coords){
    // console.log([minLat,maxLat,minLng,maxLng])
 }
 function moveMap(map,gid){
-    if(finishedGids.indexOf(gid)==-1){
-    	finishedGids.push(gid)
-        saveData({gids:finishedGids}, finishedIdsFile);
-
-	 	//var bearing = getOrientation(map,center)
-		//	loadBoundaries(map,gid)
-	//console.log([gid, bearing])
-            // console.log(gid)
+ //    if(finishedGids.indexOf(gid)==-1){
+//     	finishedGids.push(gid)
+// //        saveData({gids:finishedGids}, finishedIdsFile);
+//
+// 	 	//var bearing = getOrientation(map,center)
+// 		//	loadBoundaries(map,gid)
+// 	//console.log([gid, bearing])
+	console.log(gid)
                 console.log(boundariesData[gid])
                 var currentGeometry = boundariesData[gid].coordinates
                 var userCoords =  flatDeep(currentGeometry,Infinity)
@@ -233,38 +373,49 @@ function moveMap(map,gid){
                 map.once('moveend',function(){
 					//console.log(gid)
 					// what does this do?
-				    var filter = ['!=', 'GEOID',gid];
+					
+				    var filter = ['!=', 'FIPS',String(gid)];
 					map.setFilter("tracts",filter)
-
+					
+					
+					//sets to invisible for taking image, comment out for testing
+					map.setLayoutProperty("tract_boundaries",'visibility',"none")
+					map.setLayoutProperty("tract-centroids-1avl3g",'visibility',"none")
+					
+					
                     setTimeout(function(){
+						
+                        makePrint(map,String(gid))
+						
 						geoidIndex+=1
 						if(geoidIndex>totalIds-1){
 							return
 						}
-                        makePrint(map,gid)
                      }, 2000);
                 });
-    }else{
-       // console.log(gid+ " was already downloaded")
-        geoidIndex+=1
-        var nextGid = gids[geoidIndex]
-        //console.log("next is "+nextGid+ " at "+geoidIndex)
-       // var nextCenter = centroidsData[nextGid]
-        moveMap(map,nextGid)
-    }
+    // }else{
+   //     // console.log(gid+ " was already downloaded")
+   //      geoidIndex+=1
+   //      var nextGid = gids[geoidIndex]
+   //      //console.log("next is "+nextGid+ " at "+geoidIndex)
+   //     // var nextCenter = centroidsData[nextGid]
+   //      moveMap(map,nextGid)
+   //  }
 }
 
 function makePrint(map, gid){
+	
+	console.log("making print of "+gid+" at "+map.getZoom())
+
         var canvas = document.getElementsByClassName("mapboxgl-canvas")[0]
 
 	    canvas.toBlob(function(blob) {
-	               saveAs(blob, gid+"_" + map.getZoom() +".png");
+	               saveAs(blob, gid+"_" + String(map.getZoom()) +".png");
 	           }, "image/png");
 			  var nextGid = gids[geoidIndex]
-			  // var nextGid ="1400000US01003010500"
-
-			   //var nextCenter = centroidsData[nextGid]
-			   //console.log(nextGid)
+					//
+					// map.setLayoutProperty("tract_boundaries",'visibility',"visible")
+					// map.setLayoutProperty("tract-centroids-1avl3g",'visibility',"visible")
 			   moveMap(map,nextGid)
 }
 
