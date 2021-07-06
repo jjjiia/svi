@@ -7,8 +7,8 @@
 //})
 var centroidsFile = d3.csv("allCentroids.csv")
 var finishedGidsFile = d3.json("finished_gids.json")
-var boundaries = d3.json("tracts_svi.geojson")
-Promise.all([centroidsFile,finishedGidsFile,boundaries])
+var boundaries = d3.json("CT_Test2018.geojson")
+Promise.all([centroidsFile,finishedGidsFile,boundaries]	)
 .then(function(data){
 	//console.log(data[0])
 	dataDidLoad(data[0],data[1],data[2])
@@ -40,7 +40,11 @@ var finishedGids = []
 var finishedIdsFile = "finished_gids.json"
 var boundariesData = null
 
-var idsTodo=["36085032300","36085032300"]
+// ADDED BY ADELINE: made map a global variable
+var map = null
+var gid = null
+
+var idsTodo=[36085032300]
 // ,"36085009700","36085011201","36085011202",
 // "36085012804","36085012805","36085012806","36085015400","36085015601","36085015602",
 // "36085015603","36085017600","36085019800","36085020700","36085020801","36085022300",
@@ -54,35 +58,35 @@ function dataDidLoad(centroidsFile,finished,tractBoundaries){
     finishedGids = finished.gids
     centroidsData = makeDictionary(centroidsFile)
 //    console.log(centroidsData)
-    
+
     console.log("finished: "+finished.gids.length)
-    
-    
+
+
     boundariesData = makeBoundaryDictionary(tractBoundaries)
     //console.log(boundariesData)
-    
+
     //placesData = getIdsFromDuration(places).sort()
     //gids = getAllGid(centroidsFile)
   //  gids = nycGeoids.sort()
-    
+
     gids = idsTodo.sort()
-    
+
     var notFinished = []
     for(var g in gids){
         if(finished.gids.indexOf(gids[g])==-1){
             notFinished.push(gids[g])
-            
+
             console.log([gids[g],boundariesData[gids[g]]])
         }
     }
     console.log(notFinished.join(","))
     console.log("not finished "+notFinished.length)
-    
+
     totalIds = gids.length
     console.log("total: "+totalIds)
-    
-    
-    
+
+
+
     // console.log(totalIds)
     mapboxgl.accessToken = 'pk.eyJ1IjoiampqaWlhMTIzIiwiYSI6ImNpbDQ0Z2s1OTN1N3R1eWtzNTVrd29lMDIifQ.gSWjNbBSpIFzDXU2X5YCiQ';
     //mapboxgl.accessToken ="pk.eyJ1IjoiampqaWlhMTIzIiwiYSI6ImNpbDQ0Z2s1OTN1N3R1eWtzNTVrd29lMDIifQ.gSWjNbBSpIFzDXU2X5YCiQ"
@@ -93,30 +97,31 @@ function dataDidLoad(centroidsFile,finished,tractBoundaries){
     //   console.log(centroidsData["1400000US01003010500"])
     //   console.log(center)
 
-    var map = new mapboxgl.Map({
+    map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/jjjiia123/ckm127tll10f617o1ybzjipxh',
         //center:center,
         zoom: pub.zoom,
-        preserveDrawingBuffer: true    
+        preserveDrawingBuffer: true
     });
 
    // var gidsList = finished.map(a => a.Gids);
 //console.log(gidsList)
-  
+
 	map.on("load",function(){
 	//	console.log(center,currentId)
 	    moveMap(map,currentId)
-        console.log(map.getStyle().layers)
+			gid = currentId
+        // console.log(map.getStyle().layers)
         map.on("mousemove","tracts",function(c){
-            console.log(c.features)
+            // console.log(c.features)
         })
-        
+
 	})
-}  
+}
 
 var saveData = (function(data,fileName){
- 
+
     var a = document.createElement("a");
     document.body.appendChild(a);
     a.style = "display: none";
@@ -134,9 +139,10 @@ var saveData = (function(data,fileName){
 function makeBoundaryDictionary(data){
     var formatted = {}
     for(var i in data.features){
-        var geoid = data.features[i].properties["FIPS"]
+        var geoid = data.features[i].properties["GEOID"]
         formatted[geoid]=data.features[i].geometry
     }
+		console.log(formatted);
     return formatted
 }
 
@@ -162,12 +168,12 @@ function zoomToBounds(map,boundary){
     map.fitBounds(bounds,{padding:20})
   //  map.fitBounds(bounds,{padding:20})
 	//zoomToBounds(map,boundary)
-     
+
 }
 
 function loadBoundaries(map,gid){
     var geometry = boundariesData[gid]
-    console.log(geometry)
+    // console.log(geometry)
 	var boundary = geometry
 	zoomToBounds(map,boundary)
 }
@@ -202,18 +208,18 @@ function getMaxMin(coords){
     [maxLat, maxLng] // Northeast coordinates
     ];
     return bounds
-    
+
    // console.log([minLat,maxLat,minLng,maxLng])
 }
 function moveMap(map,gid){
     if(finishedGids.indexOf(gid)==-1){
     	finishedGids.push(gid)
         saveData({gids:finishedGids}, finishedIdsFile);
-		
+
 	 	//var bearing = getOrientation(map,center)
 		//	loadBoundaries(map,gid)
 	//console.log([gid, bearing])
-            console.log(gid)
+            // console.log(gid)
                 console.log(boundariesData[gid])
                 var currentGeometry = boundariesData[gid].coordinates
                 var userCoords =  flatDeep(currentGeometry,Infinity)
@@ -222,21 +228,22 @@ function moveMap(map,gid){
                 var bounds = new mapboxgl.LngLatBounds(userBounds)
                 pub.userBounds = bounds
                 map.fitBounds(bounds,{padding:20})
-        
-		
+
+
                 map.once('moveend',function(){
 					//console.log(gid)
-				    var filter = ['!=', 'FIPS',gid];
+					// what does this do?
+				    var filter = ['!=', 'GEOID',gid];
 					map.setFilter("tracts",filter)
-					
+
                     setTimeout(function(){
 						geoidIndex+=1
 						if(geoidIndex>totalIds-1){
 							return
 						}
-                        makePrint(map,gid)		
+                        makePrint(map,gid)
                      }, 2000);
-                });  
+                });
     }else{
        // console.log(gid+ " was already downloaded")
         geoidIndex+=1
@@ -249,14 +256,19 @@ function moveMap(map,gid){
 
 function makePrint(map, gid){
         var canvas = document.getElementsByClassName("mapboxgl-canvas")[0]
-	
+
 	    canvas.toBlob(function(blob) {
-	               saveAs(blob, gid+".png");
+	               saveAs(blob, gid+"_" + map.getZoom() +".png");
 	           }, "image/png");
 			  var nextGid = gids[geoidIndex]
 			  // var nextGid ="1400000US01003010500"
-			   
+
 			   //var nextCenter = centroidsData[nextGid]
 			   //console.log(nextGid)
 			   moveMap(map,nextGid)
+}
+
+// onclick save button
+function saveImage(map, gid) {
+	makePrint(map, gid)
 }
