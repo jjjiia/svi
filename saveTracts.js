@@ -6,8 +6,8 @@
 //	.await(dataDidLoad);
 //})
 var centroidsFile = d3.csv("allCentroids.csv")
-var finishedGidsFile = d3.json("finished_gids.json")
-var boundaries = d3.json("CT_Test2018.geojson")
+var finishedGidsFile = d3.json("finished_gids 10.16.34 AM.json")
+var boundaries = d3.json("CT_2018Polygon.geojson")
 Promise.all([centroidsFile,finishedGidsFile,boundaries]	)
 .then(function(data){
 	//console.log(data[0])
@@ -41,10 +41,10 @@ var finishedIdsFile = "finished_gids.json"
 var boundariesData = null
 
 // ADDED BY ADELINE: made map a global variable
-var map = null
-var gid = null
+//var map = null
+//var gid = null
 
-var idsTodo=[36085032300]
+var idsTodo=[36085011202]
 // ,"36085009700","36085011201","36085011202",
 // "36085012804","36085012805","36085012806","36085015400","36085015601","36085015602",
 // "36085015603","36085017600","36085019800","36085020700","36085020801","36085022300",
@@ -269,6 +269,6 @@ function makePrint(map, gid){
 }
 
 // onclick save button
-function saveImage(map, gid) {
-	makePrint(map, gid)
-}
+// function saveImage(map, gid) {
+// 	makePrint(map, gid)
+// }
