@@ -253,7 +253,7 @@ var outlier = ["36005027600",
 "36061005400"
 ]
 
-var idsTodo= ["36085009700"]
+var idsTodo= ["36085990100"]
 // ,"36085009700","36085011201","36085011202",
 // "36085012804","36085012805","36085012806","36085015400","36085015601","36085015602",
 // "36085015603","36085017600","36085019800","36085020700","36085020801","36085022300",
@@ -441,14 +441,12 @@ function moveMap(map,gid){
 				    var filter = ['!=', 'GEOID',String(gid)];
 					map.setFilter("tracts",filter)
 
-
 					//sets to invisible for taking image, comment out for testing
 					map.setLayoutProperty("tract_boundaries",'visibility',"none")
 					map.setLayoutProperty("tract-centroids-1avl3g",'visibility',"none")
 
-					// After the last frame rendered before the map enters an "idle" state.
+					// https://docs.mapbox.com/mapbox-gl-js/example/toggle-layers/
 					map.on("idle", function () {
-					  // If these two layers have been added to the style,
 					  // add the toggle buttons.
 					  if (map.getLayer('tract_boundaries') && map.getLayer("tract-centroids-1avl3g") && map.getLayer("tracts")) {
 					      // Enumerate ids of the layers.
@@ -532,9 +530,4 @@ function makePrint(map, gid){
 					// map.setLayoutProperty("tract_boundaries",'visibility',"visible")
 					// map.setLayoutProperty("tract-centroids-1avl3g",'visibility',"visible")
 			   moveMap(map,nextGid)
-}
-
-function saveImage(){
-	moveMap()
-	makePrint()
 }
