@@ -184,7 +184,76 @@ var crop = ["36081066300",
 "36081060000",
 ]
 
-var idsTodo= crop
+var outlier = ["36005027600",
+"36085022800",
+"36081060701",
+"36061010200",
+"36005050400",
+"36061004400",
+"36085004000",
+"36061013800",
+"36061005700",
+"36061008601",
+"36061014000",
+"36081063000",
+"36061006700",
+"36005009600",
+"36061002500",
+"36081061200",
+"36061014601",
+"36061008200",
+"36061002100",
+"36047016800",
+"36005030100",
+"36061009000",
+"36047008500",
+"36061005800",
+"36061014500",
+"36061005900",
+"36061015001",
+"36061001300",
+"36061006300",
+"36061006800",
+"36061005000",
+"36061000800",
+"36061000600",
+"36047016400",
+"36061000700",
+"36061001502",
+"36005001900",
+"36061003800",
+"36061006500",
+"36061013100",
+"36061009200",
+"36061012500",
+"36061010400",
+"36061004200",
+"36085000600",
+"36005043500",
+"36081028000",
+"36085024401",
+"36061010602",
+"36061031704",
+"36061031703",
+"36061001001",
+"36061023801",
+"36085017010",
+"36005027401",
+"36085017600",
+"36085003300",
+"36061016002",
+"36081002500",
+"36061000201",
+"36061002000",
+"36061023802",
+"36061003100",
+"36061006200",
+"36005013200",
+"36005045600",
+"36061005400"
+]
+
+var idsTodo= ["36061002000"]
 // ,"36085009700","36085011201","36085011202",
 // "36085012804","36085012805","36085012806","36085015400","36085015601","36085015602",
 // "36085015603","36085017600","36085019800","36085020700","36085020801","36085022300",
@@ -197,10 +266,8 @@ function dataDidLoad(finished,tractBoundaries){
     //console.log(finished)
     finishedGids = finished.gids
    // centroidsData = makeDictionary(centroidsFile)
-//    console.log(centroidsData)
-
-    // console.log("finished: "+finished.gids.length)
-
+	 //    console.log(centroidsData)
+  // console.log("finished: "+finished.gids.length)
 
     boundariesData = makeBoundaryDictionary(tractBoundaries)
     // console.log(boundariesData["36085011202"])
@@ -224,16 +291,13 @@ function dataDidLoad(finished,tractBoundaries){
 
     totalIds = gids.length    //
     // console.log("total: "+totalIds)
-
-
-
     // console.log(totalIds)
+
     mapboxgl.accessToken = 'pk.eyJ1IjoiampqaWlhMTIzIiwiYSI6ImNpbDQ0Z2s1OTN1N3R1eWtzNTVrd29lMDIifQ.gSWjNbBSpIFzDXU2X5YCiQ';
     //mapboxgl.accessToken ="pk.eyJ1IjoiampqaWlhMTIzIiwiYSI6ImNpbDQ0Z2s1OTN1N3R1eWtzNTVrd29lMDIifQ.gSWjNbBSpIFzDXU2X5YCiQ"
     var currentId =gids[geoidIndex]
     //var currentId ="1400000US01003010500"
-//    var center = [centroidsData[currentId]["lng"],centroidsData[currentId]["lat"]]
-
+		//    var center = [centroidsData[currentId]["lng"],centroidsData[currentId]["lat"]]
     //   console.log(centroidsData["1400000US01003010500"])
     //   console.log(center)
 
@@ -246,7 +310,7 @@ function dataDidLoad(finished,tractBoundaries){
     });
 
    // var gidsList = finished.map(a => a.Gids);
-//console.log(gidsList)
+	 //console.log(gidsList)
 
 	map.on("load",function(){
 	//	console.log(center,currentId)
@@ -372,21 +436,72 @@ function moveMap(map,gid){
 
                 map.once('moveend',function(){
 					//console.log(gid)
-					// what does this do?
-					
+					// reveal the correct tract
+
 				    var filter = ['!=', 'FIPS',String(gid)];
 					map.setFilter("tracts",filter)
-					
-					
+
+
 					//sets to invisible for taking image, comment out for testing
 					map.setLayoutProperty("tract_boundaries",'visibility',"none")
 					map.setLayoutProperty("tract-centroids-1avl3g",'visibility',"none")
-					
-					
+
+					// After the last frame rendered before the map enters an "idle" state.
+					map.on("idle", function () {
+					  // If these two layers have been added to the style,
+					  // add the toggle buttons.
+					  if (map.getLayer('tract_boundaries') && map.getLayer('tracts')) {
+					      // Enumerate ids of the layers.
+					      var toggleableLayerIds = ['tract_boundaries', 'tracts'];
+					      // Set up the corresponding toggle button for each layer.
+					      for (var i = 0; i < toggleableLayerIds.length; i++) {
+					        var id = toggleableLayerIds[i];
+					        if (!document.getElementById(id)) {
+					          // Create a link.
+					          var link = document.createElement('a');
+					          link.id = id;
+					          link.href = '#';
+					          link.textContent = id;
+					          link.className = 'active';
+					          // Show or hide layer when the toggle is clicked.
+					          link.onclick = function (e) {
+					            var clickedLayer = this.textContent;
+					            e.preventDefault();
+					            e.stopPropagation();
+
+					            var visibility = map.getLayoutProperty(
+					              clickedLayer,
+					              'visibility'
+					              );
+					              // Toggle layer visibility by changing the layout object's visibility property.
+					              if (visibility === 'visible') {
+					                map.setLayoutProperty(
+					                  clickedLayer,
+					                    'visibility',
+					                    'none'
+					                  );
+					                  this.className = '';
+					                    } else {
+					                      this.className = 'active';
+					                      map.setLayoutProperty(
+					                        clickedLayer,
+					                        'visibility',
+					                        'visible'
+					                      );
+					                    }
+					                  };
+
+					                  var layers = document.getElementById('menu');
+					                  layers.appendChild(link);
+					                }
+					              }
+					            }
+					      });
+
                     setTimeout(function(){
-						
+
                         makePrint(map,String(gid))
-						
+
 						geoidIndex+=1
 						if(geoidIndex>totalIds-1){
 							return
@@ -404,7 +519,7 @@ function moveMap(map,gid){
 }
 
 function makePrint(map, gid){
-	
+
 	console.log("making print of "+gid+" at "+map.getZoom())
 
         var canvas = document.getElementsByClassName("mapboxgl-canvas")[0]
@@ -419,7 +534,11 @@ function makePrint(map, gid){
 			   moveMap(map,nextGid)
 }
 
+
+
+
 // onclick save button
-// function saveImage(map, gid) {
-// 	makePrint(map, gid)
-// }
+ //function saveImage(map, gid) {
+ //	makePrint(map, gid)
+ //}
+ //function toggleWhite(){	}
