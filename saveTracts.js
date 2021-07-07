@@ -253,7 +253,7 @@ var outlier = ["36005027600",
 "36061005400"
 ]
 
-var idsTodo= ["36085990100"]
+var idsTodo= ["36005045600"]
 // ,"36085009700","36085011201","36085011202",
 // "36085012804","36085012805","36085012806","36085015400","36085015601","36085015602",
 // "36085015603","36085017600","36085019800","36085020700","36085020801","36085022300",
@@ -316,7 +316,7 @@ function dataDidLoad(finished,tractBoundaries){
 	//	console.log(center,currentId)
 	    moveMap(map,currentId)
 			gid = currentId
-        // console.log(map.getStyle().layers)
+         console.log(map.getStyle().layers)
         map.on("mousemove","tracts",function(c){
              console.log(c.features[0].properties.FIPS)
         })
@@ -448,9 +448,9 @@ function moveMap(map,gid){
 					// https://docs.mapbox.com/mapbox-gl-js/example/toggle-layers/
 					map.on("idle", function () {
 					  // add the toggle buttons.
-					  if (map.getLayer('tract_boundaries') && map.getLayer("tract-centroids-1avl3g") && map.getLayer("tracts")) {
+					  if (map.getLayer('tract_boundaries') && map.getLayer("tract-centroids-1avl3g") && map.getLayer("tracts")&& map.getLayer("water")) {
 					      // Enumerate ids of the layers.
-					      var toggleableLayerIds = ['tract_boundaries', "tract-centroids-1avl3g","tracts"];
+					      var toggleableLayerIds = ['tract_boundaries', "tract-centroids-1avl3g","tracts","water"];
 					      // Set up the corresponding toggle button for each layer.
 					      for (var i = 0; i < toggleableLayerIds.length; i++) {
 					        var id = toggleableLayerIds[i];
