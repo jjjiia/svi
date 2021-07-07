@@ -438,7 +438,7 @@ function moveMap(map,gid){
 					//console.log(gid)
 					// reveal the correct tract
 
-				    var filter = ['!=', 'FIPS',String(gid)];
+				    var filter = ['!=', 'GEOID',String(gid)];
 					map.setFilter("tracts",filter)
 
 
@@ -450,9 +450,9 @@ function moveMap(map,gid){
 					map.on("idle", function () {
 					  // If these two layers have been added to the style,
 					  // add the toggle buttons.
-					  if (map.getLayer('tract_boundaries') && map.getLayer('tracts')) {
+					  if (map.getLayer('tract_boundaries') && map.getLayer("tract-centroids-1avl3g") && map.getLayer("tracts")) {
 					      // Enumerate ids of the layers.
-					      var toggleableLayerIds = ['tract_boundaries', 'tracts'];
+					      var toggleableLayerIds = ['tract_boundaries', "tract-centroids-1avl3g","tracts"];
 					      // Set up the corresponding toggle button for each layer.
 					      for (var i = 0; i < toggleableLayerIds.length; i++) {
 					        var id = toggleableLayerIds[i];
