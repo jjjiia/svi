@@ -253,7 +253,7 @@ var outlier = ["36005027600",
 "36061005400"
 ]
 
-var idsTodo= ["36061002000"]
+var idsTodo= ["36085009700"]
 // ,"36085009700","36085011201","36085011202",
 // "36085012804","36085012805","36085012806","36085015400","36085015601","36085015602",
 // "36085015603","36085017600","36085019800","36085020700","36085020801","36085022300",
@@ -534,11 +534,7 @@ function makePrint(map, gid){
 			   moveMap(map,nextGid)
 }
 
-
-
-
-// onclick save button
- //function saveImage(map, gid) {
- //	makePrint(map, gid)
- //}
- //function toggleWhite(){	}
+function saveImage(){
+	moveMap()
+	makePrint()
+}
