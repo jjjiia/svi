@@ -40,6 +40,10 @@ var finishedGids = []
 var finishedIdsFile = "finished_gids.json"
 var boundariesData = null
 
+//global variables of map and Gid to get current map and gid on command
+var currentMapZoom
+var currentGid
+
 // ADDED BY ADELINE: made map a global variable
 //var map = null
 //var gid = null
@@ -253,7 +257,9 @@ var outlier = ["36005027600",
 "36061005400"
 ]
 
-var idsTodo= ["36005005300"]
+var idsTodo= ["36005002400" ]
+
+// "36047035200", "36061006000", "36061022302", "36081148300", "36085014605", "36085017700", "36085022600", "36085029103"
 // ,"36085009700","36085011201","36085011202",
 // "36085012804","36085012805","36085012806","36085015400","36085015601","36085015602",
 // "36085015603","36085017600","36085019800","36085020700","36085020801","36085022300",
@@ -497,14 +503,15 @@ function moveMap(map,gid){
 					      });
 
                     setTimeout(function(){
-
+												currentMapZoom = map.getZoom();
+												currentGid = gid;
                         makePrint(map,String(gid))
 
 						geoidIndex+=1
 						if(geoidIndex>totalIds-1){
 							return
 						}
-                     }, 2000);
+					}, 3000);
                 });
     // }else{
    //     // console.log(gid+ " was already downloaded")
@@ -518,7 +525,7 @@ function moveMap(map,gid){
 
 function makePrint(map, gid){
 
-	console.log("making print of "+gid+" at "+map.getZoom())
+	//console.log("making print of "+gid+" at "+map.getZoom())
 
         var canvas = document.getElementsByClassName("mapboxgl-canvas")[0]
 
@@ -530,4 +537,13 @@ function makePrint(map, gid){
 					// map.setLayoutProperty("tract_boundaries",'visibility',"visible")
 					// map.setLayoutProperty("tract-centroids-1avl3g",'visibility',"visible")
 			   moveMap(map,nextGid)
+}
+
+//additional save button
+function saveImage(){
+	 var canvas = document.getElementsByClassName("mapboxgl-canvas")[0]
+	 console.log("printing");
+	canvas.toBlob(function(blob) {
+						 saveAs(blob, currentGid + "_" + String(currentMapZoom) +".png"); //zoom scale is only the same as previous number
+				 }, "image/png");
 }
