@@ -63,6 +63,7 @@
 
      <script src='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js'></script>
    <link href='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css' rel='stylesheet' />
+<script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script>
 
 
     <style>
@@ -132,13 +133,14 @@
 
 </head>
 <body>
+	<div id="startButton">Start</div>
   <nav id="menu"></nav>
   <div id="map"></div>
 
-  <button type="button" name="button" onclick="saveImage()">Save Image</button>
+  <!-- <button type="button" name="button" onclick="saveImage()">Save Image</button> -->
 
 
-  <script src='saveTracts.js'></script>
+  <script src='saveTracts_rotate.js'></script>
 
 <script >
 

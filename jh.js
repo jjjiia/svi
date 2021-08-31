@@ -46,7 +46,7 @@ function drawMap(neighbors,neighborNeighbors){
 
 
 //var homeId = "36081028700"
-var homeId = "36061020300"
+var homeId =34013980100
 var neighborsData = d3.json("neighbors.json")
 var sviData = d3.json("tracts_svi.geojson")
 Promise.all([sviData,neighborsData]).then(function(data){ ready(data[0],data[1])})
@@ -97,11 +97,15 @@ var totalColumns = ["HH","HU","TOTPOP"]
 
 var denomException = ["UNEMP","NOHSDP","LIMENG","DISABL"]
 function ready(sviData,neighbors){ 
+	console.log(neighbors)
     // var topTenCats = ['EP_POV', 'EP_UNEMP', 'EP_PCI', 'EP_NOHSDP', 'EP_AGE65', 'EP_AGE17', 'EP_DISABL',
     // 'EP_SNGPNT', 'EP_MINRTY', 'EP_LIMENG', 'EP_MUNIT', 'EP_MOBILE', 'EP_CROWD', 'EP_NOVEH', 'EP_GROUPQ', 'EP_UNINSUR']
     //addGrid()
     var dict = fipsDict(sviData)
+	console.log(dict)
+	console.log(dict[homeId])
     var neighbors = (dict[homeId].properties["NEIGHBORS"]+","+homeId).split(",")    
+	console.log(neighbors)
     var neighborNeighbors = nOfN(neighbors,dict).concat(neighbors)
     
     // var sumN = addData(neighbors,dict)
@@ -320,8 +324,12 @@ function addData(gids,dict){
 
 function nOfN(neighbors,dict){
     var nOfNs =[]
+	console.log(dict)
+	console.log(neighbors)
+	
     for(var n in neighbors){
-        var nid = neighbors[n]//.split(",")[n]
+        var nid = neighbors[n]
+		console.log(nid)//.split(",")[n]
         var newNeighbors = dict[nid].properties["NEIGHBORS"]
         //console.log(newNeighbors)
         for(var i in newNeighbors.split(",")){
